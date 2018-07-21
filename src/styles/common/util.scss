@@ -1,0 +1,19 @@
+:global {
+  .common-fl {
+    float: left;
+  }
+  .common-fr {
+    float: right;
+  }
+  .text-align-r {
+    text-align: right;
+  }
+  .text-align-c {
+    text-align: center
+  }
+  .text-ellipsis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
