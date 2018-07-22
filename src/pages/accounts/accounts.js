@@ -2,13 +2,13 @@
  * @Author: Hayden Woo 
  * @Date: 2018-07-22 13:32:23 
  * @Last Modified by: Hayden Woo
- * @Last Modified time: 2018-07-22 17:05:10
+ * @Last Modified time: 2018-07-23 00:16:32
  */
 
 import React, { Component } from 'react';
 import BasicLayout from '@/layouts/basic-layout/basic-layout';
 import styles from './accounts.scss';
-import { Button, Menu, Dropdown, Icon, Table, Modal, Input, Divider } from 'antd';
+import { Button, Table, Modal, Input, Divider } from 'antd';
 class Accounts extends Component {
   state = {
     visible: false
@@ -26,9 +26,10 @@ class Accounts extends Component {
   }
 
   render() {
-    const { Column, ColumnGroup } = Table;
+    const { Column } = Table;
     const data = [
       {
+        id: 1,
         website: '58同城',
         name: 'Brown',
         username: 'Jack',
@@ -37,6 +38,7 @@ class Accounts extends Component {
         status: '正常'
       },
       {
+        id: 2,
         website: '58同城1',
         name: 'Brown',
         username: 'Jack',
@@ -51,7 +53,7 @@ class Accounts extends Component {
           <div className={styles.operate}>
             <Button icon="plus" type="primary" onClick={this.showModal}>新增账号</Button>
           </div>
-          <Table dataSource={data}>
+          <Table dataSource={data} rowKey="id">
             <Column
               title="序号"
               key="action"
@@ -62,29 +64,36 @@ class Accounts extends Component {
             <Column
               title="网站"
               dataIndex="website"
+              key="website"
             />
             <Column
               title="姓名"
               dataIndex="name"
+              key="name"
             />
             <Column
               title="用户名"
               dataIndex="username"
+              key="username"
             />
             <Column
               title="类型"
               dataIndex="type"
+              key="type"
             />
             <Column
               title="到期日期"
               dataIndex="expire_date"
+              key="expire_date"
             />
             <Column
               title="登录状态"
               dataIndex="status"
+              key="status"
             />
             <Column
               title="操作"
+              key="action2"
               render={(text, record) => (
                 <span>
                   <a href="javascript:;">续费</a>

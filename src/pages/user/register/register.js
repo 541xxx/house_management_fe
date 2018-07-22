@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import UserLayout from '@/layouts/user-layout/user-layout';
 import styles from './register.scss';
-import { Form, Button, Row, Col, Input, Icon, Checkbox } from 'antd';
+import { Form, Button, Row, Col, Input } from 'antd';
 import { Link } from 'react-router-dom';
 import { PASSWORD, V_CODE, MOBILE_CN } from '@/utils/regexp';
 

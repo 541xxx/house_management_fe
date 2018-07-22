@@ -3,7 +3,8 @@ import '@/styles/common/index.scss';
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
-import { BrowserRouter, Route, Redirect, Switch, HashRouter} from 'react-router-dom';
+// BrowserRouter
+import { Route, Redirect, Switch, HashRouter} from 'react-router-dom';
 import reducers from './reducer';
 import Accounts from '@/pages/accounts/accounts';
 import Houses from '@/pages/houses/houses';
@@ -22,7 +23,6 @@ const store = createStore(reducers, compose(
   applyMiddleware(thunk),
   window.devToolsExtension ? window.devToolsExtension() : f => f,
 ));
-let login = false;
 function App() {
   return (
             // <Redirect to='/accounts'/>

@@ -2,8 +2,8 @@
   padding: 56px 116px;
   .left {
     float: left;
-    margin-right: 54px;
-    width: 80px;
+    padding-right: 54px;
+    width: 134px;
     .avatar {
       margin-top: 66px;
       width: 80px;
@@ -17,7 +17,7 @@
         cursor: pointer;
         color: $font-color-base;
         padding: 6px 0;
-        .tab_pane_active {
+        &.tab_pane_active {
           color: $primary-color;
         }
       }
@@ -25,5 +25,44 @@
   }
   .right {
     float: right;
+    width: calc(100% - 134px);
+    padding-left: 36px;
+    border-left: 1px solid #dbdbdb;
+    .pay_record {
+      .record_header {
+        padding: 30px 0;
+        .header_money, .header_label {
+          display: inline-block;
+          vertical-align: middle;
+        }
+        .header_money {
+          padding: 0 10px;
+          font-size: 24px;
+          color: $primary-color;
+        }
+      }
+    }
+    .info {
+      padding-top: 28px;
+      .info_item {
+        padding: 16px 0;
+        list-style: none;
+        color: $font-color-base;
+        .item_label, .item_text, .action {
+          display: inline-block;
+          vertical-align: middle;
+        }
+        .item_label {
+          width: 54px;
+        }
+        .item_text_custom {
+          text-align: left;
+          width: 120px;
+        }
+        .action {
+          color: $primary-color;
+        }
+      }
+    }
   }
 }
