@@ -3,7 +3,9 @@ import UserLayout from '@/layouts/user-layout/user-layout';
 import styles from './login.scss';
 import { Form, Tabs, Button, Row, Col, Input, Icon, Checkbox } from 'antd';
 import { Link } from 'react-router-dom';
-
+import { PASSWORD, V_CODE, MOBILE_CN} from '@/utils/regexp';
+import Cookies from 'js-cookie';
+import Proptypes from 'prop-types';
 
 
 class Login extends Component {
@@ -12,6 +14,9 @@ class Login extends Component {
     this.handleTabsChange = this.handleTabsChange.bind(this);
     this.haddleGetCode = this.haddleGetCode.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+  }
+  static contextTypes = {
+    router: Proptypes.object.isRequired
   }
   state = {
     type: 1,
@@ -24,6 +29,8 @@ class Login extends Component {
     this.props.form.validateFields(fieldNames, (err, values) => {
       if (!err) {
         console.log('Received values of form: ', values);
+        Cookies.set('user_t', 'xasdweqweqwe', { expires: 1 });
+        this.context.router.history.push('/accounts');
       }
     });
   }
@@ -47,7 +54,7 @@ class Login extends Component {
                 </FormItem>
                 <FormItem>
                   {getFieldDecorator('password', {
-                    rules: [{ required: true, message: '请输入密码'}],
+                    rules: [{ required: true, message: '请输入密码' }, { pattern: PASSWORD, message: '请输入6到16位数字加字母的密码' }],
                   })(
                     <Input size="large" prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="密码" />
                   )}
@@ -56,7 +63,7 @@ class Login extends Component {
               <TabPane tab="手机号登录" key="2">
                 <FormItem>
                 {getFieldDecorator('mobile', {
-                  rules: [{ required: true, message: '请输入手机号码' }],
+                    rules: [{ required: true, message: '请输入手机号码' }, { pattern: MOBILE_CN, message: '请输入正确的手机号码' }],
                 })(
                   <Input size="large" prefix={<Icon type="mobile" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="手机号码" />
                 )}
@@ -65,7 +72,7 @@ class Login extends Component {
                 <Row gutter={8}>
                   <Col span={16}>
                       {getFieldDecorator('vcode', {
-                        rules: [{ required: true, message: '请输入验证码' }],
+                        rules: [{ required: true, message: '请输入验证码' }, { pattern: V_CODE, message: '请输入正确的四位数字验证码' }],
                       })(
                         <Input size="large" prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="验证码" />
                       )}

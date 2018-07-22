@@ -1,0 +1,66 @@
+$header-padding: 160px;
+.header {
+  position: fixed;
+  left: 0;
+  top: 0;
+  line-height: 64px;
+  padding: 0 $header-padding;
+  width: 100%;
+  height: 64px;
+  background: rgb(0, 21, 41);
+  .logo {
+    display: inline-block;
+    padding-right: 36px;
+  }
+  .nav {
+    display: inline-block;
+    .nav_link {
+      display: inline-block;
+      padding: 0 24px;
+      color: rgba(255, 255, 255, .65);
+      &.activeNavLink, &:hover {
+        color: rgb(255, 255, 255);
+      }
+    }
+  }
+  .right {
+    position: absolute;
+    right: $header-padding;
+    top: 0;
+    .bell_icon {
+      display: inline-block;
+      vertical-align: middle;
+      font-size: $font-size-medium;
+      height: 100%;
+      padding: 0 16px;
+      color: rgba(255, 255, 255, .65);
+      &:hover {
+        color: rgb(255, 255, 255)
+      }
+    }
+    .dropdown {
+      display: inline-block;
+      height: 100%;
+      color: rgba(255, 255, 255, .65);
+      &:hover {
+        color: rgb(255, 255, 255);
+      }
+      .avatar {
+        margin-right: 8px;
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+      }
+      .username {
+      }
+    }
+  }
+}
+.dropdown_menu {
+  :global(.ant-dropdown-menu-item) {
+    width: 160px;
+  }
+  .menu_item_icon {
+    margin-right: 8px;
+  }
+}

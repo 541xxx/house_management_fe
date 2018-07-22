@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import Proptypes from 'prop-types';
+import Cookies from 'js-cookie';
+
 
 function requireAuth(Component) {
   // 组件已登录模块直接返回 防止重新渲染
@@ -28,7 +30,7 @@ function requireAuth(Component) {
     }
 
     checkAuth() {
-      const token = localStorage.getItem('t');
+      const token = Cookies.get('user_t');
       if (!token) {
         console.log(this.context)
         this.context.router.history.push('/user/login');

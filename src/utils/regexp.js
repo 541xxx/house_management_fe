@@ -1,0 +1,10 @@
+export const EMAIL = /^([\w-_]+(?:\.[\w-_]+)*)@((?:[a-z0-9]+(?:-[a-zA-Z0-9]+)*)+\.[a-z]{2,6})$/i;
+export const PASSWORD = /(?!^[0-9]+$)(?!^[A-z]+$)(?!^[^A-z0-9]+$)^[^\s\u4e00-\u9fa5]{6,16}$/;
+export const ID_CODE = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+export const MOBILE_CN = /^1[3-9][0-9]{9}$/;
+export const MOBILE_TEL_CN = /^((1[3-9][0-9]{9})|(0\d{2,3}-[1-9]\d{6,7}))$/;
+export const USCC = /^(\d{15}|(\d|[a-z]){18})$/i; // Unified Social Credit Code
+export const MOBILE_TEL_400_CN = /^((1[3-9][0-9]{9})|(0\d{2,3}-[1-9]\d{6,7})|(400[0-9]{7}))$/;
+export const BANK_CARD_CN = /^[1-9]{2,18}$/;
+export const EMPTY_STRING = /^\s*$/;
+export const V_CODE = /^\d{4}$/; // 验证码

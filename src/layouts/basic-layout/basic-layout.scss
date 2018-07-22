@@ -1,0 +1,26 @@
+.container {
+  margin-top: 64px;
+  height: 100vh;
+  background: #f0f2f5;
+  .content {
+    height: 100%;
+    padding: 0 160px;
+    .title {
+      background: #FFF;
+      padding: 0 30px;
+      .header {
+        padding: 20px 0 10px;
+      }
+      .desc {
+        margin: 0;
+        padding-bottom:16px;
+      }
+    }
+    .main {
+      height: calc(100% - 208px);
+      margin: 18px 0 18px;
+      padding: 30px;
+      background: #FFF;
+    }
+  }
+}

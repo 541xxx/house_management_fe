@@ -1,0 +1,9 @@
+- label: 账号管理
+  path: '/accounts'
+- label: 房源管理
+  path: '/houses'
+- label: 使用说明
+  path: '/instructions'
+- label: 个人中心
+  path: '/userinfo'
+  hidden: true

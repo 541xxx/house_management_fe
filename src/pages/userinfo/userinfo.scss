@@ -1,0 +1,29 @@
+.userinfo {
+  padding: 56px 116px;
+  .left {
+    float: left;
+    margin-right: 54px;
+    width: 80px;
+    .avatar {
+      margin-top: 66px;
+      width: 80px;
+      height: 80px;
+    }
+    .tabs {
+      text-align: center;
+      margin-top: 34px;
+      list-style: none;
+      .tab_pane {
+        cursor: pointer;
+        color: $font-color-base;
+        padding: 6px 0;
+        .tab_pane_active {
+          color: $primary-color;
+        }
+      }
+    }
+  }
+  .right {
+    float: right;
+  }
+}
