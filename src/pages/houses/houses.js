@@ -2,33 +2,138 @@
  * @Author: Hayden Woo 
  * @Date: 2018-07-22 13:32:23 
  * @Last Modified by: Hayden Woo
- * @Last Modified time: 2018-07-22 17:32:25
+ * @Last Modified time: 2018-07-30 01:06:38
  */
 
 import React, { Component } from 'react';
 import BasicLayout from '@/layouts/basic-layout/basic-layout';
 import styles from './houses.scss';
-import { Button, Menu, Dropdown, Icon, Table, Modal, Input } from 'antd';
-class Accounts extends Component {
+import { Button, Menu, Dropdown, Icon, Table, Modal, Input, Message, Pagination } from 'antd';
+import { getHouses, postRepetition, releaseHouses, deleteHouses } from '@/api/houses';
+class Houses extends Component {
+  constructor(props) {
+    super(props);
+    this.handleModalCancel = this.handleModalCancel.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleModalOk = this.handleModalOk.bind(this);
+    this.handleRelease = this.handleRelease.bind(this);
+    this.handlePagination = this.handlePagination.bind(this);
+  }
   state = {
-    visible: false
+    visible: false,
+    confirmLoading: false,
+    houses: [],
+    loading: false,
+    inputUrl: '',
+    selectedRows: [],
+    page: 1,
+    total: 0,
+    pageSize: 20
+  }
+
+  componentDidMount() {
+    this.fetchHouses();
+  }
+   fetchHouses (page = 1){
+     this.setState({
+       loading: true
+     });
+     getHouses({
+      //  page: 1,
+      //  page_size: 20
+     }).then(res => {
+       const data = res.data.data;
+       console.log(data);
+       this.setState({
+         houses: data.data,
+         total: data.total_num,
+         page: data.page,
+         loading: false
+       });
+       console.log(this.state, 'xxxx');
+     }).catch(err => {
+       this.setState({
+         loading: false
+       });
+     });
   }
   showModal = () => {
     this.setState({
       visible: true,
     });
   }
-  handleCancel = (e) => {
-    console.log(e);
+  handleModalCancel() {
     this.setState({
       visible: false,
     });
   }
-
+  handleModalOk() {
+    this.setState({
+      confirmLoading: true
+    });
+    postRepetition({
+      url: this.state.inputUrl
+    }).then(() => {
+      Message.success('采集成功');
+      this.setState({
+        visible: false,
+        confirmLoading: false
+      });
+      
+    }).catch(() => {
+      this.setState({
+        confirmLoading: false
+      });
+    })
+  }
+  handleChange(key, e) {
+    this.setState({
+      [key]: e.target.value
+    });
+  }
+  /**
+   *
+   * @param {*String} action 取消发布 or 发布
+   * @memberof Accounts
+   */
+  handleRelease(action) {
+    if (!this.state.selectedRows.length) {
+      return;
+    }
+    const purpose = this.state.selectedRows[0].purpose; // 房源类型
+    const houseids = this.state.selectedRows.map(v => v.houseid); // 当前选中的房源
+    const every = this.state.selectedRows.every(v => v.purpose === purpose); // 所有房源类型是否相等
+    const everySame = this.state.selectedRows.every(v => v.realy_push_shop === action); // 所有房源状态是否相等
+    if (!every) {
+      Message.error('只能发布同类型的房源');
+      return;
+    } 
+    if (!everySame) {
+      const text = action === 'True' ? '发布未发布' : '取消已发布';
+      Message.error(`只能${text}状态的房源`);
+      return;
+    } 
+    releaseHouses({
+      houseids,
+      purpose,
+      action: action
+    }).then(() => {
+      this.handleRelease();
+    });
+  }
+  
+  handlePagination(page) {
+    this.setState({ page });
+    this.getHouses(page);
+  }
+  
   render() {
     const { Column } = Table;
     const rowSelection = {
       onChange: (selectedRowKeys, selectedRows) => {
+        this.setState({
+          selectedRows
+        });
         console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
       },
       getCheckboxProps: record => ({
@@ -36,28 +141,6 @@ class Accounts extends Component {
         name: record.name,
       }),
     }
-    const data = [{
-      key: '1',
-      firstName: 'John',
-      lastName: 'Brown',
-      age: 32,
-      address: 'New York No. 1 Lake Park',
-      address1: 'New York No. 1 Lake Park',
-    }, {
-      key: '2',
-      firstName: 'Jim',
-      lastName: 'Green',
-      age: 42,
-      address: 'London No. 1 Lake Park',
-      address1: 'London No. 1 Lake Park',
-    }, {
-      key: '3',
-      firstName: 'Joe',
-      lastName: 'Black',
-      age: 32,
-      address: 'Sidney No. 1 Lake Park',
-      address1: 'Sidney No. 1 Lake Park',
-    }];
     const menu = (
       <Menu className={styles.dropdown_menu}>
         <Menu.Item>
@@ -72,7 +155,7 @@ class Accounts extends Component {
       <BasicLayout pathname={this.props.location.pathname}>
         <div className={styles.houses}>
           <div className={styles.operate}>
-            <Button type="primary">发布</Button>
+            <Button type="primary" onClick={this.handleRelease}>发布</Button>
             <Dropdown overlay={menu} className={styles.dropdown}>
               <a href="javascript:;">
                 其他操作
@@ -81,28 +164,42 @@ class Accounts extends Component {
             </Dropdown>
             <Button className="common-fr" type="primary" onClick={this.showModal}>采集房源</Button>
           </div>
-          <Table rowSelection={rowSelection}  dataSource={data}>
+          <Table rowSelection={rowSelection} dataSource={this.state.houses} rowKey="houseid" loading={this.state.loading} pagination={false}>
             <Column
               title="房源标题"
-              dataIndex="firstName"
-              key="firstName"
+              dataIndex="title"
+              key="title"
             />
             <Column
               title="房源信息"
-              dataIndex="age"
-              key="age"
+              dataIndex="projname"
+              key="projname"
             />
             <Column
               title="价格"
-              dataIndex="address"
-              key="address"
+              dataIndex="property"
+              key="property"
             />
             <Column
               title="类型"
-              dataIndex="address"
-              key="address1"
+              dataIndex="purpose"
+              key="purpose"
             />
             <Column
+              title="状态"
+              dataIndex="realy_push_shop"
+              key="realy_push_shop"
+              render = {(text, record) => (
+                text === 'True' ? '已发布' : '未发布'
+              )}
+            />
+            <Column
+              title="发布时间"
+              key="action"
+              dataIndex="input_time"
+              key="input_time"
+            />
+            {/* <Column
               title="发布时间"
               key="action"
               render={(text, record) => (
@@ -110,19 +207,21 @@ class Accounts extends Component {
                   <a href="javascript:;">2018-07-25</a>
                 </span>
               )}
-            />
+            /> */}
           </Table>
+          <Pagination onChange={this.handlePagination} hideOnSinglePage={true} defaultPageSize={this.state.pageSize} defaultCurrent={Number(this.state.page)} total={Number(this.state.total)} className={styles.pagination} />,
           <Modal
             title="采集房源"
             visible={this.state.visible}
-            onCancel={this.handleCancel}
+            onCancel={this.handleModalCancel}
             className={styles.modal}
             footer={null}
+            
           >
             <div className={styles.modal_content}>
               <div className={styles.title}>请输入房源链接</div>
-              <Input className={styles.input_url} placeholder="http://" />
-              <Button className={styles.collect} type="primary">采集到账户</Button>
+              <Input onChange={(v) => this.handleChange('inputUrl', v)} className={styles.input_url} placeholder="http://" />
+              <Button onClick={this.handleModalOk} loading={this.state.confirmLoading} className={styles.collect} type="primary">采集到账户</Button>
               <div className={styles.instructions}>
                 <div className={styles.subtitle}>采集说明</div>
                 <p className={styles.desc}>
@@ -148,4 +247,4 @@ class Accounts extends Component {
   }
 }
 
-export default Accounts;
+export default Houses;

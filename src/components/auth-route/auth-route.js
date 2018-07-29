@@ -30,9 +30,8 @@ function requireAuth(Component) {
     }
 
     checkAuth() {
-      const token = Cookies.get('user_t');
+      const token = Cookies.get('user_token');
       if (!token) {
-        console.log(this.context)
         this.context.router.history.push('/user/login');
         return;
       }
@@ -42,7 +41,6 @@ function requireAuth(Component) {
     }
 
     render() {
-      console.log(this.state);
       if (this.state.login) {
         return <Component {...this.props}></Component>
       }

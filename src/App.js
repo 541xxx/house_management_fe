@@ -14,7 +14,7 @@ import Login from '@/pages/user/login/login';
 import Register from '@/pages/user/register/register';
 import Cookies from 'js-cookie';
 const getLoginStatus = () => {
-  if (Cookies.get('user_t')) {
+  if (Cookies.get('user_token')) {
     return true;
   }
   return false;

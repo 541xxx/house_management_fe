@@ -1,0 +1,22 @@
+renewal:
+  - value: 1
+    label: 1个月
+    fee: 0.1
+  - value: 2
+    label: 2个月
+    fee: 0.2
+  - value: 3
+    label: 3个月
+    fee: 0.3
+
+accountType: 
+  - value: true
+    label: 包月
+  - value: false
+    label: 单次  
+
+payMethod: 
+  - value: 'alipay'
+    label: 支付宝
+  - value: 'wechat'
+    label: 微信    

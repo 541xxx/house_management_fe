@@ -5,6 +5,7 @@ import { Button, Table } from 'antd';
 import classnames from 'classnames';
 
 class UserInfo extends Component {
+
   state = {
     type: 1
   }

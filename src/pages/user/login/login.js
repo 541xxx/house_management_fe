@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { PASSWORD, V_CODE, MOBILE_CN} from '@/utils/regexp';
 import Cookies from 'js-cookie';
 import Proptypes from 'prop-types';
+import { postSignIn } from '@/api/user';
 
 
 class Login extends Component {
@@ -20,17 +21,18 @@ class Login extends Component {
   }
   state = {
     type: 1,
-    autoLogin: false,
+    autoLogin: true,
     count: 0
   }
   handleSubmit (e) {
     e.preventDefault();
-    let fieldNames = this.state.type === 1 ? ['username', 'password'] : ['mobile', 'vcode'];
+    let fieldNames = this.state.type === 1 ? ['mobile', 'password'] : ['mobile', 'vcode'];
     this.props.form.validateFields(fieldNames, (err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
-        Cookies.set('user_t', 'xasdweqweqwe', { expires: 1 });
-        this.context.router.history.push('/accounts');
+        postSignIn(values).then(res => {
+          Cookies.set('user_token', res.data.data.token);
+          this.context.router.history.push('/accounts');
+        });
       }
     });
   }
@@ -43,7 +45,22 @@ class Login extends Component {
       <UserLayout>
         <div className={styles.login}>
           <Form onSubmit={this.handleSubmit}>
-            <Tabs defaultActiveKey="1" onChange={this.handleTabsChange} className={styles.tabs}>
+            <FormItem>
+              {getFieldDecorator('mobile', {
+                rules: [{ required: true, message: '请输入手机号' }, { pattern: MOBILE_CN, message: '请输入正确的手机号码' }],
+                initialValue: Cookies.get('user_mobile') || ''
+              })(
+                <Input size="large" prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="手机号" />
+              )}
+            </FormItem>
+            <FormItem>
+              {getFieldDecorator('password', {
+                rules: [{ required: true, message: '请输入密码' }, { pattern: PASSWORD, message: '请输入6到16位数字加字母的密码' }],
+              })(
+                <Input size="large" prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="密码" />
+              )}
+            </FormItem>
+            {/* <Tabs defaultActiveKey="1" onChange={this.handleTabsChange} className={styles.tabs}>
               <TabPane tab="账号密码登录" key="1">
                 <FormItem>
                   {getFieldDecorator('username', {
@@ -90,9 +107,10 @@ class Login extends Component {
                 </Row>
                 </FormItem>
               </TabPane>
-            </Tabs>
+            </Tabs> */}
             <div>
-            <Checkbox checked={this.state.autoLogin} onChange={this.changeAutoLogin}>自动登录</Checkbox>
+              <Checkbox checked={this.state.autoLogin} onChange={() => this.setState({ autoLogin: false})}>自动登录</Checkbox>
+              {/* <Link className={styles.register} style={{ float: 'right' }} to="/user/register">注册账户</Link> */}
             <a style={{ float: 'right' }} href="">忘记密码</a>
             </div>
             <Button size="large" className={styles.submit_btn} type="primary" htmlType="submit">登录</Button>

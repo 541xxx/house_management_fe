@@ -1,0 +1,6 @@
+loginStatus: 
+  - value: true
+    label: 正常
+  - value: false
+    label: 失效
+

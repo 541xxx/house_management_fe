@@ -14,7 +14,7 @@ class GlobalHeader extends Component {
     router: Proptypes.object.isRequired
   }
   handleLogout = () => {
-    Cookies.set('user_t', '');
+    Cookies.set('user_token', '');
     this.context.router.history.push('/user/login');
   }
   render() {

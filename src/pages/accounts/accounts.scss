@@ -3,4 +3,37 @@
     text-align: left;
     margin-bottom: 24px;
   }
+  .table {
+    .status {
+      position: relative;
+      padding-left: 10px;
+      &::after {
+        content: ' ';
+        position: absolute;
+        top: 50%;
+        left: 0;
+        transform: translateY(-50%);
+        height: 6px;
+        width: 6px;
+        border-radius: 50%;
+        background: #ff001d;
+      }
+      &.normalStatus {
+        background: #00a859;
+      }
+    }
+  }
 }
+.modal {
+  .form {
+    text-align: left;
+    width: 340px;
+    .fee {
+      color:  #ff001d;
+    }
+  }
+}
+.pay_modal {
+  text-align: center;
+}
+
