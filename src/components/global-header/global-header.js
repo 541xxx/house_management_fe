@@ -6,9 +6,11 @@ import { Link, NavLink } from 'react-router-dom';
 import { Icon, Menu, Dropdown } from 'antd';
 import Cookies from 'js-cookie';
 import Proptypes from 'prop-types';
+import { connect } from 'react-redux';
 
-
-
+@connect(
+  state => state.user,
+)
 class GlobalHeader extends Component {
   static contextTypes = {
     router: Proptypes.object.isRequired
@@ -18,6 +20,7 @@ class GlobalHeader extends Component {
     this.context.router.history.push('/user/login');
   }
   render() {
+    const { userInfo } = this.props;
     const menu = (
       <Menu className={styles.dropdown_menu}>
         <Menu.Item>
@@ -36,7 +39,9 @@ class GlobalHeader extends Component {
     );
     return (
       <header className={styles.header}>
-        <img className={styles.logo} src={logo} alt="logo"/>
+        <Link to='/'>
+          <img className={styles.logo} src={logo} alt="logo"/>
+        </Link>
         <nav className={styles.nav}>
           {
             globalNav.map(item => {
@@ -49,12 +54,12 @@ class GlobalHeader extends Component {
           }
         </nav>
         <div className={styles.right}>
-          <Icon type="bell" className={styles.bell_icon}></Icon>
+          {/* <Icon type="bell" className={styles.bell_icon}></Icon> */}
           <Dropdown overlay={menu} className={styles.dropdown}>
             <a href="javascript:;">
               <img className={styles.avatar} src="https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png" className={styles.avatar} alt="avatar"></img>
               <span className={styles.username} href="javascript:;">
-                Hayden
+                {userInfo ? userInfo.username : null}
               </span>
             </a>
           </Dropdown>

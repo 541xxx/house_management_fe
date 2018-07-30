@@ -3,12 +3,17 @@ import styles from './userinfo.scss';
 import BasicLayout from '@/layouts/basic-layout/basic-layout';
 import { Button, Table } from 'antd';
 import classnames from 'classnames';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types'
+
+
 
 class UserInfo extends Component {
-
+ 
   state = {
     type: 1
   }
+ 
   handleTabChange(type) {
     this.setState({
       type
@@ -37,6 +42,7 @@ class UserInfo extends Component {
       address: 'Sidney No. 1 Lake Park',
       address1: 'Sidney No. 1 Lake Park',
     }];
+    const { userInfo } = this.props;
     return (
       <BasicLayout pathname={this.props.location.pathname}>
         <div className={styles.userinfo}>
@@ -53,25 +59,25 @@ class UserInfo extends Component {
                 ? <ul className={styles.info}>
                     <li className={styles.info_item}>
                       <span className={styles.item_label}>用户</span>
-                      <span className={styles.item_text}>周杰伦</span>
+                    <span className={styles.item_text}>{userInfo ? userInfo.username : null}</span>
                     </li>
                     <li className={styles.info_item}>
                       <span className={styles.item_label}>手机号</span>
-                      <span className={styles.item_text}>18678787878</span>
+                    <span className={styles.item_text}>{userInfo ? userInfo.mobile : null}</span>
                     </li>
                     <li className={styles.info_item}>
                       <span className={styles.item_label}>密码</span>
                       <span className={classnames(styles.item_text, styles.item_text_custom)}>******</span>
                       <a className={styles.action} href="javascript:;">修改</a>
                     </li>
-                    <li className={styles.info_item}>
+                    {/* <li className={styles.info_item}>
                       <span className={styles.item_label}>微信</span>
                       <span className={classnames(styles.item_text, styles.item_text_custom)}>未绑定</span>
                       <a className={styles.action} href="javascript:;">绑定</a>
-                    </li>
+                    </li> */}
                     <li className={styles.info_item}>
                       <span className={styles.item_label}>余额</span>
-                      <span className={classnames(styles.item_text, styles.item_text_custom, 'text-ellipsis')}>￥800</span>
+                    <span className={classnames(styles.item_text, styles.item_text_custom, 'text-ellipsis')}>￥{userInfo ? userInfo.account_balance : null}</span>
                       <a className={styles.action} href="javascript:;">充值</a>
                     </li>
                   </ul>

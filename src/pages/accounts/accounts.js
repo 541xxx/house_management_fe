@@ -2,7 +2,7 @@
  * @Author: Hayden Woo 
  * @Date: 2018-07-22 13:32:23 
  * @Last Modified by: Hayden Woo
- * @Last Modified time: 2018-07-30 01:01:38
+ * @Last Modified time: 2018-07-30 23:49:07
  */
 
 import React, { Component } from 'react';
@@ -148,8 +148,8 @@ class Accounts extends Component {
     Modal.confirm({
       title: '提示',
       content: `确认删除用户名为：「${data.username}」的账户吗？`,
-      okText: 'Yes',
-      okType: '删除',
+      okText: '删除',
+      okType: 'danger',
       cancelText: '取消',
       onOk() {
         deleteAccounts(data.id).then(() => {

@@ -7,6 +7,7 @@ import { PASSWORD, V_CODE, MOBILE_CN} from '@/utils/regexp';
 import Cookies from 'js-cookie';
 import Proptypes from 'prop-types';
 import { postSignIn } from '@/api/user';
+import { getParameterByName } from '@/utils/utils';
 
 
 class Login extends Component {
@@ -26,12 +27,14 @@ class Login extends Component {
   }
   handleSubmit (e) {
     e.preventDefault();
+    const redirectUrl = getParameterByName('redirect_uri', decodeURIComponent(this.props.location.search)) || '/accounts';
     let fieldNames = this.state.type === 1 ? ['mobile', 'password'] : ['mobile', 'vcode'];
     this.props.form.validateFields(fieldNames, (err, values) => {
       if (!err) {
         postSignIn(values).then(res => {
+          Cookies.set('user_mobile', values.mobile);
           Cookies.set('user_token', res.data.data.token);
-          this.context.router.history.push('/accounts');
+          this.context.router.history.push(redirectUrl);
         });
       }
     });

@@ -3,10 +3,14 @@
 import axios from 'axios';
 import { message } from 'antd';
 import Cookies from 'js-cookie';
+// import PropTypes from 'prop-types'
+
+// import router from 'react-router-dom';
 
 const baseUrl = process.env.REACT_APP_BSSE_URL;
 
 let ret = ({ method = 'GET', url = '', params = {}, data } = {}) => {
+  console.log(this);
   const hasParam = url.match(/\?/);
   const urlParams = Object.keys(params).reduce((previousValue, key, i) =>
     previousValue + `${(i || hasParam) && '&' || '?'}${key}=${encodeURIComponent(params[key])}`, '')
@@ -26,6 +30,9 @@ axios.interceptors.response.use(res => {
     data
   })
 }, (err) => {
+  // console.log(err.response.status);
+  if ([401].includes(err.response.status)) {
+  }
   message.error(err.response.data.message);
   return Promise.reject({
     ...err

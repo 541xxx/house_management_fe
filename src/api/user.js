@@ -14,6 +14,10 @@ export function postSignUp(data) {
   return request.post('/signup/', data);
 }
 
+export function getUserInfo() {
+  return request.get('/user/');
+}
+
 
 
 

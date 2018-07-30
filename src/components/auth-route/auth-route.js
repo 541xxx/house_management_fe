@@ -2,6 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Proptypes from 'prop-types';
 import Cookies from 'js-cookie';
+// import { connect }   from 'react-redux';
+import { fetchUserInfo } from '@/redux/user.redux';
 
 
 function requireAuth(Component) {
@@ -20,9 +22,11 @@ function requireAuth(Component) {
     state = {
       login: false
     }
-
     componentWillMount() {
       this.checkAuth();
+      if (!this.props.userInfo) {
+        this.props.getUserInfo();
+      }
     }
 
     componentWillReceiveProps(nextProps) {
@@ -32,12 +36,17 @@ function requireAuth(Component) {
     checkAuth() {
       const token = Cookies.get('user_token');
       if (!token) {
-        this.context.router.history.push('/user/login');
+        let redirect = this.props.location.pathname + this.props.location.search;
+        console.log(redirect, '11');
+        this.context.router.history.push('/user/login?message=401&redirect_uri=' + encodeURIComponent(redirect));
+        this.setState({
+          login: false
+        })
         return;
       }
       this.setState({
         login: true
-      })
+      });
     }
 
     render() {
@@ -51,12 +60,16 @@ function requireAuth(Component) {
   // return Component.AuthenticatedComponent
   function mapStateToProps(state) {
     return {
-      token: state.token
+      userInfo: state.user.userInfo
     };
   }
 
   function mapDispatchToProps(dispatch) {
-    return {};
+    return {
+      getUserInfo: () => {
+        dispatch(fetchUserInfo())
+      }
+    };
   }
 
   Component.AuthenticatedComponent = connect(mapStateToProps, mapDispatchToProps)(AuthenticatedComponent);
