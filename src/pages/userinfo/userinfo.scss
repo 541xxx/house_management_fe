@@ -1,8 +1,9 @@
 .userinfo {
   padding: 56px 116px;
-  height: 500px;
   .left {
-    float: left;
+    display: inline-block;
+    vertical-align: top;
+    // float: left;
     padding-right: 54px;
     width: 134px;
     .avatar {
@@ -25,7 +26,9 @@
     }
   }
   .right {
-    float: right;
+    display: inline-block;
+    vertical-align: top;
+    // float: right;
     width: calc(100% - 134px);
     padding-left: 36px;
     border-left: 1px solid #dbdbdb;
@@ -66,4 +69,11 @@
       }
     }
   }
+  .pagination {
+    margin-top: 16px;
+    text-align: right;
+  }
+}
+.top_up_modal {
+  text-align: center;
 }

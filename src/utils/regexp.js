@@ -8,3 +8,4 @@ export const MOBILE_TEL_400_CN = /^((1[3-9][0-9]{9})|(0\d{2,3}-[1-9]\d{6,7})|(40
 export const BANK_CARD_CN = /^[1-9]{2,18}$/;
 export const EMPTY_STRING = /^\s*$/;
 export const V_CODE = /^\d{4}$/; // 验证码
+export const POSITIVE_NUM = /^\d+(\.\d+)?$/;

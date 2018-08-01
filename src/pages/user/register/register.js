@@ -6,18 +6,13 @@ import { Link } from 'react-router-dom';
 import { PASSWORD, V_CODE, MOBILE_CN } from '@/utils/regexp';
 import { getSignUpCode, postSignUp } from '@/api/user.js';
 import Cookies from 'js-cookie';
-import request from '@/utils/request';
-import axios from 'axios';
-import Proptypes from 'prop-types';
+import history from '@/history';
 
 class Register extends Component {
   constructor(props) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleGetCode = this.handleGetCode.bind(this);
-  }
-  static contextTypes = {
-    router: Proptypes.object.isRequired
   }
   componentDidMount() {
     console.log(process.env);
@@ -48,11 +43,10 @@ class Register extends Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
         postSignUp(values).then(() => {
           message.success('注册成功');
           Cookies.set('user_mobile', values.mobile);
-          this.context.router.history.push('/user/login');
+          history.push('/user/login');
         });
       }
     });

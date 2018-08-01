@@ -3,20 +3,15 @@
 import axios from 'axios';
 import { message } from 'antd';
 import Cookies from 'js-cookie';
-// import PropTypes from 'prop-types'
-
-// import router from 'react-router-dom';
-
+import history from '@/history';
 const baseUrl = process.env.REACT_APP_BSSE_URL;
-
 let ret = ({ method = 'GET', url = '', params = {}, data } = {}) => {
-  console.log(this);
   const hasParam = url.match(/\?/);
   const urlParams = Object.keys(params).reduce((previousValue, key, i) =>
-    previousValue + `${(i || hasParam) && '&' || '?'}${key}=${encodeURIComponent(params[key])}`, '')
+    previousValue + `${(i || hasParam) ? '&' : '?'}${key}=${encodeURIComponent(params[key])}`, '')
   return axios(`${baseUrl + url + urlParams}`, {
     headers: {
-      'Authorization': `FANG ${Cookies.get('user_token') || ''}`
+      'Authorization': `${Cookies.get('user_token')}` ? `FANG ${Cookies.get('user_token')}` : ''
     },
     method,
     data
@@ -30,13 +25,15 @@ axios.interceptors.response.use(res => {
     data
   })
 }, (err) => {
-  // console.log(err.response.status);
   if ([401].includes(err.response.status)) {
+    history.push('/user/login');
+    err.response.data.message = '';
   }
-  message.error(err.response.data.message);
+  err.response.data.message && message.error(err.response.data.message);
   return Promise.reject({
-    ...err
-  })
+    data: err.response.data,
+    status: err.response.status 
+  });
 });
 
 ret.get = (url, params) => ret({ url, params });

@@ -4,6 +4,7 @@ import Proptypes from 'prop-types';
 import Cookies from 'js-cookie';
 // import { connect }   from 'react-redux';
 import { fetchUserInfo } from '@/redux/user.redux';
+import history from '@/history';
 
 
 function requireAuth(Component) {
@@ -15,9 +16,6 @@ function requireAuth(Component) {
   // 创建验证组件
 
   class AuthenticatedComponent extends Component {
-    static contextTypes = {
-      router: Proptypes.object.isRequired
-    }
 
     state = {
       login: false
@@ -36,9 +34,12 @@ function requireAuth(Component) {
     checkAuth() {
       const token = Cookies.get('user_token');
       if (!token) {
-        let redirect = this.props.location.pathname + this.props.location.search;
-        console.log(redirect, '11');
-        this.context.router.history.push('/user/login?message=401&redirect_uri=' + encodeURIComponent(redirect));
+        console.log(history);
+        let redirect = history.location.pathname + history.location.search;
+        history.push({
+          pathname: '/user/login',
+          search: 'message=401&redirect_uri= ' + encodeURIComponent(redirect)
+        });
         this.setState({
           login: false
         })

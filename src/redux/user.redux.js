@@ -4,7 +4,6 @@ const initState = {
   userInfo: null
 }
 
-const LOGIN_STATUTS = 'LOGIN_STATUS';
 const FETCH_USER_INFO = 'FETCH_USER_INFO';
 
 export function user(state = initState, action) {
@@ -18,9 +17,7 @@ export function user(state = initState, action) {
   }
 }
 
-function loginStatus() {
 
-}
 
 export function fetchUserInfo() {
   return dispatch => {

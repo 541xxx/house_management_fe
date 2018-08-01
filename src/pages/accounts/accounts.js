@@ -2,7 +2,7 @@
  * @Author: Hayden Woo 
  * @Date: 2018-07-22 13:32:23 
  * @Last Modified by: Hayden Woo
- * @Last Modified time: 2018-07-30 23:49:07
+ * @Last Modified time: 2018-08-02 01:07:47
  */
 
 import React, { Component } from 'react';
@@ -214,7 +214,7 @@ class Accounts extends Component {
           <div className={styles.operate}>
             <Button icon="plus" type="primary" onClick={() => this.handleModal('addModalVisible', true)}>新增账号</Button>
           </div>
-          <Table dataSource={data} rowKey="id" className={styles.table} loading={this.state.loading}>
+          <Table dataSource={data} rowKey="id" className={styles.table} loading={this.state.loading} pagination={{ pageSize: 20, hideOnSinglePage: true}}>
             <Column
               title="序号"
               key="action"
@@ -403,7 +403,7 @@ class Accounts extends Component {
             cancelText="关闭"
             onCancel={() => this.handleModal('payModalVisible', false)}
           >
-            <img src={this.state.qr_code}/>
+            <img src={this.state.qr_code} alt="qrcode"/>
           </Modal>
         </div>
       </BasicLayout>

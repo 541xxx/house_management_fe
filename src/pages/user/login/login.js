@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
 import UserLayout from '@/layouts/user-layout/user-layout';
 import styles from './login.scss';
-import { Form, Tabs, Button, Row, Col, Input, Icon, Checkbox } from 'antd';
+import { Form, Button, Input, Icon, Checkbox } from 'antd';
 import { Link } from 'react-router-dom';
-import { PASSWORD, V_CODE, MOBILE_CN} from '@/utils/regexp';
+import { PASSWORD, MOBILE_CN} from '@/utils/regexp';
 import Cookies from 'js-cookie';
-import Proptypes from 'prop-types';
 import { postSignIn } from '@/api/user';
 import { getParameterByName } from '@/utils/utils';
+import history from '@/history';
 
 
 class Login extends Component {
@@ -17,9 +17,6 @@ class Login extends Component {
     this.haddleGetCode = this.haddleGetCode.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
-  static contextTypes = {
-    router: Proptypes.object.isRequired
-  }
   state = {
     type: 1,
     autoLogin: true,
@@ -28,21 +25,20 @@ class Login extends Component {
   handleSubmit (e) {
     e.preventDefault();
     const redirectUrl = getParameterByName('redirect_uri', decodeURIComponent(this.props.location.search)) || '/accounts';
+    console.log(redirectUrl);
     let fieldNames = this.state.type === 1 ? ['mobile', 'password'] : ['mobile', 'vcode'];
     this.props.form.validateFields(fieldNames, (err, values) => {
       if (!err) {
         postSignIn(values).then(res => {
           Cookies.set('user_mobile', values.mobile);
           Cookies.set('user_token', res.data.data.token);
-          this.context.router.history.push(redirectUrl);
+          history.push(redirectUrl);
         });
       }
     });
   }
   render() {
-    const TabPane = Tabs.TabPane;
     const FormItem = Form.Item;
-    const { count } = this.state;
     const { getFieldDecorator } = this.props.form;
     return (
       <UserLayout>

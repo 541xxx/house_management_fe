@@ -19,5 +19,10 @@ export function getUserInfo() {
 }
 
 
+export function updatePassword(data) {
+  return request.patch('/user/password/', data);
+}
+
+
 
 
